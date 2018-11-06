@@ -19,7 +19,8 @@ class CreateAnggotasTable extends Migration
             $table->string('nama_agt',50);
             $table->string('alamat',150);
             $table->string('kota',30);
-            $table->string('telp',15);
+            $table->string('telp',15)->unique();
+            $table->tinyinteger('status')->default(0);
             $table->timestamps();
         });
     }

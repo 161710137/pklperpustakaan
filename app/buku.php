@@ -13,4 +13,8 @@ class buku extends Model
     {
     	return $this->belongsTo('App\jn_buku','id_jb');
     }
+    public function pinjamkb()
+    {
+    	return $this->hasMany('App\pinjamkbl','id_buku');
+    }
 }

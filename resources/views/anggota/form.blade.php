@@ -22,7 +22,7 @@
                      </div>
                      <div class="form-group">
                         <label>Alamat</label>
-                        <textarea name="alamat" id="alamat" class="summernote" placeholder="Masukan data alamat"></textarea>
+                        <textarea name="alamat" id="alamat" class="form-control" placeholder="Masukan data alamat"></textarea>
                         <span class="help-block has-error alamat_error "></span>
                      </div>
                      <div class="form-group">

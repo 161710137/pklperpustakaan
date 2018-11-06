@@ -15,14 +15,18 @@ class BukuController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+     public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function json(){
         $buku = buku::all();
         return DataTables::of($buku)
         ->addColumn('jebu',function($buku){
-            return $buku->jn_buku->jenis;
+            return $buku->jn_buku['jenis'];
         })
         ->addColumn('action',function($buku){
-            return '<center><a href="#" class="btn btn-xs btn-primary edit" data-id_jb="'.$buku->id_jb.'"><i class="glyphicon glyphicon-edit"></i> Edit</a> | <a href="#" class="btn btn-xs btn-danger delete" id_jb="'.$buku->id_jb.'"><i class="glyphicon glyphicon-remove"></i> Delete</a></center>';
+            return '<center><a href="#" class="btn btn-xs btn-primary edit" data-id="'.$buku->id.'"><i class="glyphicon glyphicon-edit"></i> Edit</a> | <a href="#" class="btn btn-xs btn-danger delete" id="'.$buku->id.'"><i class="glyphicon glyphicon-remove"></i> Delete</a></center>';
         })
         ->rawColumns(['action','jebu'])->make(true);
     }
@@ -30,14 +34,6 @@ class BukuController extends Controller
     {
         $buku = jn_buku::all();
         return view('buku.index',compact('buku'));
-    }
-    function removedata(Request $request)
-    {
-        $buku = buku::find($request->input('id'));
-        if($buku->delete())
-        {
-            echo 'Data Deleted';
-        }
     }
 
     /**
@@ -65,7 +61,7 @@ class BukuController extends Controller
             'thn_terbit'=>'required',
             'penerbit'=>'required',
             'tersedia'=>'required'
-        ],[
+        ],[ 
             'judul.required'=>'judul tidak boleh kosong',
             'pengarang.required'=>'pengarang tidak boleh kosong',
             'isbn.required'=>'isbn tidak boleh kosong',
@@ -75,6 +71,7 @@ class BukuController extends Controller
             'tersedia.required'=>'tersedia tidak boleh kosong'
         ]);
         $buku = new buku;
+        $buku->id_jb = $request->id_jb;
         $buku->judul = $request->judul;
         $buku->pengarang = $request->pengarang;
         $buku->isbn = $request->isbn;
@@ -119,15 +116,15 @@ class BukuController extends Controller
         $this->validate($request,[
             'judul'=>'required',
             'pengarang'=>'required',
-            'isbn'=>'required|unique:bukus',
+            // 'isbn'=>'required|unique:bukus',
             'thn_terbit'=>'required',
             'penerbit'=>'required',
             'tersedia'=>'required'
         ],[
             'judul.required'=> 'Judul Buku tidak boleh kosong',
             'pengarang.required'=> 'Pengarang Wajib diisi',
-            'isbn.required'=> 'ISBN tidak boleh kosong',
-            'isbn.unique'=> 'ISBN tidak boleh kosong',
+            // 'isbn.required'=> 'ISBN tidak boleh kosong',
+            // 'isbn.unique'=> 'ISBN tidak boleh kosong',
             'thn_terbit.required'=> 'Tahun terbit harus diisi',
             'penerbit.required'=> 'Penerebit harus diisi',
             'tersedia.required'=> 'Isi stok yang ada'
@@ -135,7 +132,7 @@ class BukuController extends Controller
             $buku = buku::find($id);
             $buku->judul = $request->judul;
             $buku->pengarang  = $request->pengarang;
-            $buku->isbn = $request->isbn;
+            // $buku->isbn = $request->isbn;
             $buku->thn_terbit = $request->thn_terbit;
             $buku->penerbit = $request->penerbit;
             $buku->tersedia = $request->tersedia;
@@ -149,8 +146,21 @@ class BukuController extends Controller
      * @param  \App\buku  $buku
      * @return \Illuminate\Http\Response
      */
-    public function destroy(buku $buku)
+    public function destroy(Request $request)
     {
-        //
+        $data = buku::find($request->input('id'));
+        if($data->delete())
+        {
+            echo 'Data Deleted';
+        }
+    }
+
+    public function removedata(Request $request)
+    {
+        $data = buku::find($request->input('id'));
+        if($data->delete())
+        {
+            echo 'Data Deleted';
+        }
     }
 }

@@ -16,11 +16,12 @@ class CreatePinjamkblsTable extends Migration
         Schema::create('pinjamkbls', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nopjkb',10);
-            $table->integer('id_agt');
-            $table->integer('id_buku');
+            $table->integer('id_agt')->unsigned();
+            $table->integer('id_buku')->unsigned();
             $table->date('tgl_pjm');
             $table->date('tgl_hrs_kbl');
-            $table->double('denda');
+            $table->date('tgl_kbl')->nullable();
+            $table->double('denda')->nullable();
             $table->timestamps();
         });
     }

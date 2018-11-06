@@ -14,6 +14,10 @@ class AnggotaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */ 
+     public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function json(){
         $agt = anggota::all();
         return DataTables::of($agt)
@@ -33,7 +37,7 @@ class AnggotaController extends Controller
         {
             echo 'Data Deleted';
         }
-    }
+    } 
 
     /**
      * Show the form for creating a new resource.
@@ -122,7 +126,7 @@ class AnggotaController extends Controller
             'kota.required'=> 'Kota tidak boleh kosong ',
             'telp.required'=> 'Telepon tidak boleh kosong'
         ]);
-            $agt = jn_buku::find($id);
+            $agt = anggota::find($id);
             $agt->no_agt = $request->no_agt;
             $agt->nama_agt = $request->nama_agt;
             $agt->alamat = $request->alamat;

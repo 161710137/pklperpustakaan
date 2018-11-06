@@ -1,41 +1,53 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Datatables</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>       
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+@extends('temp')
+@section('content')
 
-    <!-- include summernote css/js -->
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-  </head>
-  <body>
-    <div class="container">
-      <br />
-      <h3 align="center">Datatables</h3>
-      <br />
-      <div align="right">
-        <button type="button" name="add" id="add_data" class="btn btn-success btn-sm">Tambah</button>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Data Tables</h1>
+          </div>
+          <!-- <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Data Tables</li>
+            </ol>
+          </div> -->
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header" style="margin-bottom: 15px">
+              <h1 class="card-title">Data Table</h1>
+              <button type="button" name="add" id="Tambah" class="btn btn-primary pull-right" style="margin-left: 830px; margin-top: 10px; margin-bottom: 10px">Tambah Data</button>
+            </div>
+              <div class="panel panel-body">
+                 <table id="jenis_table" class="table table-bordered" style="width:100%">
+                    <thead>
+                       <tr>
+                        <th>Id</th>
+                        <th>Jenis Buku</th>
+                        <th>Action</th>
+                       </tr>
+                    </thead>
+                 </table>
+              </div>
+            </div>
+        </div>
       </div>
-      <table id="jenis_table" class="table table-bordered" style="width:100%">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Jenis Buku</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-      </table>
-    </div>
-    @include('jnbuku.form')
+    </section>
+  </div>
+@endsection
+@push('scripts')
+
+@include('jnbuku.form')
     <script type="text/javascript">
       $(document).ready(function() {
           //get ke dataTable
@@ -49,7 +61,7 @@
                   { "data": "action"}
               ]
           });
-           $('#add_data').click(function(){
+           $('#Tambah').click(function(){
               $('#jenModal').modal('show');
               $('#jen_form')[0].reset();
               $('#action').val('Tambah');
@@ -89,7 +101,7 @@
                                 title: 'Success!',
                                 text: data.message,
                                 type: 'success',
-                                timer: '3500'
+                                timer: '1500'
                             })
                },
                error: function (data){
@@ -126,7 +138,7 @@
                                 title: 'Success!',
                                 text: data.message,
                                 type: 'success',
-                                timer: '3500'
+                                timer: '1500'
                             })
                },
                error: function (data){
@@ -163,7 +175,7 @@
                                 title: 'Success!',
                                 text: data.message,
                                 type: 'success',
-                                timer: '3500'
+                                timer: '1500'
                             })
          
                 }
@@ -203,5 +215,4 @@
          })
       });
     </script>
-  </body>
-</html>
+@endpush

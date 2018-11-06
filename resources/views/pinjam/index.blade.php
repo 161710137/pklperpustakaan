@@ -1,45 +1,55 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Datatables</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>       
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+@extends('temp')
+@section('content')
 
-    <!-- include summernote css/js -->
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-  </head>
-  <body>
-    <div class="container">
-      <br />
-      <h3 align="center">Datatables Peminjaman Kembali</h3>
-      <br />
-      <div align="right">
-        <button type="button" name="add" id="add_data" class="btn btn-success btn-sm">Tambah</button>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Data Tables</h1>
+          </div>
+          <!-- <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Data Tables</li>
+            </ol>
+          </div> -->
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header" style="margin-bottom: 15px">
+              <h1 class="card-title">Data Table</h1>
+              <button type="button" name="add" id="Tambah" class="btn btn-primary pull-right" style="margin-left: 830px; margin-top: 10px; margin-bottom: 10px">Tambah Data</button>
+            </div>
+              <div class="panel panel-body">
+                 <table id="pinjam_table" class="table table-bordered" style="width:100%">
+                    <thead>
+                            <th>Id</th>
+                            <th>No Pinjam</th>
+                            <th>Nama Anggota</th>
+                            <th>Judul Buku</th>
+                            <th>Tanggal Pinjam Buku</th>
+                            <th>Tanggal Harus Kembali</th>
+                            <th>Action</th>
+                       </tr>
+                    </thead>
+                 </table>
+              </div>
+            </div>
+        </div>
       </div>
-      <table id="pinjam_table" class="table table-bordered" style="width:100%">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>No Anggota</th>
-            <th>Nama Anggota</th>
-            <th>Judul Buku</th>
-            <th>Tanggal Pinjam Buku</th>
-            <th>Tanggal Harus Kembali</th>
-            <th>Denda</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-      </table>
-    </div>
+    </section>
+  </div>
+  @endsection
+  @push('scripts')
+
     @include('pinjam.form')
     <script type="text/javascript">
       $(document).ready(function() {
@@ -49,17 +59,17 @@
               "serverSide": true,
               "ajax":'{{route('pinjam')}}',
               "columns":[
-                  { "data":"id"},
-                  { "data": "nopjkb"},
-                  { "data": "id_agt" },
-                  { "data": "id_buku"},
-                  { "data": "tgl_pjm"},
-                  { "data": "tgl_hrs_kbl"},
-                  { "data": "denda"},
-                  { "data": "action"}
+                
+            { data: 'id', name: 'id' },
+            { data: 'nopjkb', name: 'nopjkb' },
+            { data: 'anggota', name: 'anggota' },
+            { data: 'buku', name: 'buku' },
+            { data: 'tgl_pjm', name: 'tgl_pjm' },
+            { data: 'tgl_hrs_kbl', name: 'tgl_hrs_kbl' },
+            { data: 'action', orderable:false, searchable: false}
               ]
           });
-           $('#add_data').click(function(){
+           $('#Tambah').click(function(){
               $('#pinModal').modal('show');
               $('#pin_form')[0].reset();
               $('#action').val('Tambah');
@@ -94,12 +104,12 @@
                  console.log(data);
                  $('#pinModal').modal('hide');
                  $('#action').val('Tambah');
-                 $('#pinjam').DataTable().ajax.reload();
+                 $('#pinjam_table').DataTable().ajax.reload();
                     swal({
                                 title: 'Success!',
                                 text: data.message,
                                 type: 'success',
-                                timer: '3500'
+                                timer: '1500'
                             })
                },
                error: function (data){
@@ -131,12 +141,12 @@
                success: function (data){
                  console.log(data);
                  $('#pinModal').modal('hide');
-                 $('#pinjam').DataTable().ajax.reload();
+                 $('#pinjam_table').DataTable().ajax.reload();
                  swal({
                                 title: 'Success!',
                                 text: data.message,
                                 type: 'success',
-                                timer: '3500'
+                                timer: '1500'
                             })
                },
                error: function (data){
@@ -157,39 +167,6 @@
              }); 
            }
         });
-          //delete
-           $(document).on('click', '.delete', function(){
-         var dele = $(this).attr('id');
-         if(confirm("Apakah Anda Yakin Menghapus Data Ini?"))
-         {
-            $.ajax({
-                url:"{{route('delete')}}",
-                method:"get",
-                data:{id:dele},
-                success:function(data)
-                {
-                  $('#pinjam').DataTable().ajax.reload();
-                    swal({
-                                title: 'Success!',
-                                text: data.message,
-                                type: 'success',
-                                timer: '3500'
-                            })
-         
-                }
-            })
-         }
-         else
-         {
-          swal({
-            title: 'Batal',
-            text: 'Data tidak jadi dihapus',
-            type: 'error'
-          })
-            return false;
-         }
-         }); 
-         });
          $(document).on('click', '.edit', function(){
          var edit = $(this).data('id');
          $('#form_output').html('');
@@ -206,17 +183,16 @@
                 $('#nopjkb').val(data.nopjkb);
                 $('#id_agt').val(data.id_agt);
                 $('#id_buku').val(data.id_buku);
-                $('#tgl_pjm').val(data.tgl_pjm);
-                $('#tgl_hrs_kbl').val(data.tgl_hrs_kbl);
-                $('#denda').val(data.denda);
+                // $('#tgl_pjm').val(data.tgl_pjm);
+                // $('#tgl_hrs_kbl').val(data.tgl_hrs_kbl);
                 $('.select').select2();
                 $('#pin_id').val(edit);
                 $('#pinModal').modal('show');
                 $('#action').val('Edit');
                 $('.modal-title').text('Edit Data');
             },
-         })
-      });
+          })
+         });
+       });
     </script>
-  </body>
-</html>
+@endpush  

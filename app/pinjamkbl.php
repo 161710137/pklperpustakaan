@@ -6,15 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class pinjamkbl extends Model
 {
-    protected $fillable = ['nopjkb','id_agt','id_buku','tgl_pjm','tgl_hrs_kbl','denda'];
+    protected $fillable = ['nopjkb','id_agt','id_buku','tgl_pjm','tgl_hrs_kbl','tgl_kbl','denda'];
     public $timestamps = true;
 
-    public function anggota()
-    {
-    	return $this->belongsTo('App\anggota','id_agt');
+    public function Anggota(){
+        return $this->belongsTo('App\anggota','id_agt');
     }
-    public function buku()
-    {
-    	return $this->hasMany('App\buku','id_buku');
+    public function Buku(){
+        return $this->belongsTo('App\buku','id_buku');
     }
 }
